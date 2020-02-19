@@ -33,6 +33,9 @@ spec:
                 memory: 512Mi
         securityContext:
             privileged: true
+        env:
+          - name: DOCKER_HOST
+            value: tcp://localhost:2375
         volumeMounts:
         - mountPath: /var/lib/docker
           name: dind-data
