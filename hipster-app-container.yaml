@@ -35,7 +35,9 @@ spec:
             privileged: true
         env:
           - name: DOCKER_HOST
-            value: tcp://localhost:2375
+            value: tcp://localhost:2376
+          - name: DOCKER_TLS_VERIFY
+            value: 0
         volumeMounts:
         - mountPath: /var/lib/docker
           name: dind-data
