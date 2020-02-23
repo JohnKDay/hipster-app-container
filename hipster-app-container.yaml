@@ -34,10 +34,8 @@ spec:
         securityContext:
             privileged: true
         env:
-        - name: DOCKER_HOST
-          value: tcp://localhost:2376
-        - name: DOCKER_TLS_VERIFY
-          value: '0'
+        - name: DOCKER_TLS_CERTDIR
+          value: ''
         volumeMounts:
         - mountPath: /var/lib/docker
           name: dind-data
@@ -81,8 +79,9 @@ metadata:
 spec:
  type: NodePort
  ports:
- - port: 2022
+ - port: 22
    targetPort: 22
    protocol: TCP
+   nodePort: 32222
  selector:
   app: hipster-app-container
