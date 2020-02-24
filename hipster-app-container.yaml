@@ -9,7 +9,7 @@ spec:
     requests:
       storage: 60Gi
 ---
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hipster-app-container
@@ -45,12 +45,9 @@ spec:
           name: certs
         - mountPath: /root/hipster-app-containers
           name: hipster-app-containers
-      - image: "johnkday/hipster-app-container:latest"
+      - image: "johnkday/hipster-app-container:xpra"
         imagePullPolicy: Always
         name: hipster-app-container
-        env:
-        - name: DOCKER_HOST
-          value: tcp://localhost:2376
         ports:
         - containerPort: 22
         volumeMounts:
@@ -69,6 +66,22 @@ spec:
         emptyDir: {}
       - name: hipster-app-containers
         emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: hipster-app-containers-xpra
+ labels:
+  run: xpra
+spec:
+ type: NodePort
+ ports:
+ - port: 14500
+   targetPort: 14500
+   protocol: TCP
+   nodePort: 32450
+ selector:
+  app: hipster-app-container
 ---
 apiVersion: v1
 kind: Service
