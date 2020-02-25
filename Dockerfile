@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y curl python-pip ruby wget jq bash-compl
     sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list' && \
     wget -q https://xpra.org/gpg.asc -O- | sudo apt-key add - && \
     add-apt-repository "deb https://xpra.org/ bionic main" && \
-    apt-get update && apt-get install --no-install-recommends -y code xpra firefox sakura && \
+    apt-get update && apt-get install --no-install-recommends -y code xpra xpra-html5 firefox sakura libasound2 icewm  && \
     pip install awscli && \
     curl -s https://api.github.com/repos/kubernetes-sigs/aws-iam-authenticator/releases/latest | grep "browser_download.url.*linux_amd64" | cut -d : -f 2,3 | tr -d '"' | wget -O /usr/local/bin/aws-iam-authenticator -qi - && chmod 555 /usr/local/bin/aws-iam-authenticator && \
     curl -s https://api.github.com/repos/GoogleContainerTools/skaffold/releases/latest | grep "browser_download.url.*linux-amd64.$" | cut -d : -f 2,3 | tr -d '"' | wget -O /usr/local/bin/skaffold -qi - && chmod 555 /usr/local/bin/skaffold && \
@@ -26,6 +26,7 @@ RUN echo 'root:hipster' | chpasswd
 RUN useradd -ms /bin/bash hipster
 RUN echo 'hipster:hipster' | chpasswd
 RUN sed -i 's/#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN adduser docker sudo && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
