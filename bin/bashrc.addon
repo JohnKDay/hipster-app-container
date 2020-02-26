@@ -1,0 +1,21 @@
+
+# Souce the bash completion for kubernetes
+source <(kubectl completion bash)
+# Create 'rekube' to get all of the KUBECONFIG files in ~/.kube
+source ~/k8s_kubeadmin.source
+
+alias kstat="watch -n 5 'kubectl get nodes -o wide; echo; kubectl get pods; echo; kubectl get svc | grep -v none' "
+alias kstat2="watch -n 5 \"cat $KUBECONFIG | grep server\: ;echo ; kubectl get nodes -o wide; echo; kubectl get pods; echo; kubectl get svc | grep -v none\" "
+
+alias k=kubectl
+complete -F __start_kubectl k
+
+alias thekey="echo ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDC87Bd+ChjNHtjN2n9KDNDTwb/25hR+cEOOr2jbL//e CCPkey1"
+
+# You can never have enough history
+export HISTSIZE=10000
+
+# Write every command from every bash to the history
+shopt -s histappend
+PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
+
